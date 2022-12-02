@@ -1,4 +1,4 @@
-with open("day_1_input.txt", "r") as f:
+with open("day_01_input.txt", "r") as f:
     elf_calories = [0]
     for line in f:
         g = line.strip()
@@ -9,7 +9,7 @@ with open("day_1_input.txt", "r") as f:
 
     print(max(elf_calories))
 
-with open("day_1_input.txt", "r") as f:
+with open("day_01_input.txt", "r") as f:
     elf_calories = [0]
     for line in f:
         g = line.strip()
