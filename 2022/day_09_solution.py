@@ -51,18 +51,6 @@ def move_tail(
             return (tail_position[0] - 1, tail_position[1] - 1)
 
 
-def print_grid(visited: set[tuple[int, int]], start: tuple[int, int]):
-    grid = [["."] * 26] * 21
-    grid[start[0]][start[1]] = "s"
-    for tail_position in visited:
-        grid[tail_position[0]][tail_position[1]] = "#"
-
-    print(visited)
-    for row in grid:
-        print("".join(row))
-    print()
-
-
 def part_a():
     moves = list(
         map(
@@ -92,26 +80,28 @@ def part_b():
     moves = list(
         map(
             lambda line: line.strip().split(" "),
-            open("2022/day_09_example_input.txt", "r").readlines(),
+            open("2022/day_09_input.txt", "r").readlines(),
         )
     )
     for move in moves:
         [direction, distance] = move
         move[1] = int(distance)
-    START = (5, 11)
+    START = (0, 0)
 
     knot_positions = [START] * 10  # 0 is the head, 1-9 are the knots
     visited = {START}
     for direction, distance in moves:
         for _ in range(distance):
             knot_positions[0] = get_move_func[direction](knot_positions[0], 1)
-            knot_positions = [knot_positions[0]] + [
-                move_tail(leader, follower)
-                for leader, follower in zip(knot_positions, knot_positions[1:])
-            ]
+            # the below code is a bit trash. I like the commented-out code below better, but it's off by one.
+            for i, position in enumerate(knot_positions[1:]):
+                knot_positions[i + 1] = move_tail(knot_positions[i], position)
+            # knot_positions = [knot_positions[0]] + [
+            #     move_tail(leader, follower)
+            #     for leader, follower in zip(knot_positions, knot_positions[1:])
+            # ]
 
             visited.add(knot_positions[-1])
-        print_grid(visited, START)
     print(len(visited))
 
 
