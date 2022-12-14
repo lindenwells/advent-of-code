@@ -1,4 +1,7 @@
 import json
+from itertools import chain
+from functools import cmp_to_key
+from pprint import pprint
 
 pairs = list(
     map(
@@ -40,11 +43,24 @@ def compare(x, y) -> int:
         return compare(x, [y])
 
 
-print(
-    sum(
-        [
-            index + 1 if compare(first, second) == -1 else 0
-            for (index, (first, second)) in enumerate(pairs)
-        ]
+def part_a():
+    print(
+        sum(
+            [
+                index + 1 if compare(first, second) == -1 else 0
+                for (index, (first, second)) in enumerate(pairs)
+            ]
+        )
     )
-)
+
+
+def part_b():
+    packets = list(chain(*pairs, [[2]], [[2]]))
+    packets.append([[2]])
+    packets.append([[6]])
+    sorted_packets = sorted(packets, key=cmp_to_key(lambda x, y: compare(x, y)))
+    print((sorted_packets.index([[2]]) + 1) * (sorted_packets.index([[6]]) + 1))
+
+
+part_a()
+part_b()
