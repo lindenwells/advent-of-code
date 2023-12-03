@@ -38,35 +38,36 @@ def smallest(digit_word: str, digit) -> str:
 def get_number_from_line_2(line: str) -> int:
     digit_counts = {}
     stripped = line.strip().lstrip(ascii_lowercase).rstrip(ascii_lowercase)
+    digits: list[str] = []
 
-    for digit_word in digit_words.keys():
-        start = 0
-        while True:
-            try:
-                index_of_digit_word = line.index(digit_word, start)
-                digit_counts[index_of_digit_word] = digit_word
-                start += len(digit_word) + index_of_digit_word
-            except ValueError:
-                break
+    for i, letter in enumerate(line):
+        if letter.isdigit():
+            digits.append(letter)
+        for digit_word, digit in digit_words.items():
+            if line[i:].startswith(digit_word):
+                digits.append(digit)
+    # for digit_word in digit_words.keys():
+    #     start = 0
+    #     while True:
+    #         try:
+    #             index_of_digit_word = line.index(digit_word, start)
+    #             digit_counts[index_of_digit_word] = digit_word
+    #             start += len(digit_word) + index_of_digit_word
+    #         except ValueError:
+    #             break
 
-    for digit_word in digit_words.values():
+    # for digit_word in digit_words.values():
 
-        start = 0
-        while True:
-            try:
-                index_of_digit_word = line.index(digit_word, start)
-                digit_counts[index_of_digit_word] = bruh[int(digit_word)]
-                start += len(digit_word) + index_of_digit_word
-            except ValueError:
-                break
-    if digit_counts:
-        result = int(
-            digit_words[digit_counts[min(digit_counts.keys())]]
-            + digit_words[digit_counts[max(digit_counts.keys())]]
-        )
-        return result
-    else:
-        print(line)
+    #     start = 0
+    #     while True:
+    #         try:
+    #             index_of_digit_word = line.index(digit_word, start)
+    #             digit_counts[index_of_digit_word] = bruh[int(digit_word)]
+    #             start += len(digit_word) + index_of_digit_word
+    #         except ValueError:
+    #             break
+    result = int(digits[0] + digits[-1])
+    return result
 
 
 assert get_number_from_line("1abc2") == 12
@@ -82,8 +83,13 @@ assert get_number_from_line_2("4nineeightseven2") == 42
 assert get_number_from_line_2("zoneight234") == 14
 assert get_number_from_line_2("7pqrstsixteen") == 76
 assert get_number_from_line_2("1ight") == 11
+assert get_number_from_line_2("eighthree") == 83
+assert get_number_from_line_2("sevenine") == 79
+assert get_number_from_line_2("oneight") == 18
+assert get_number_from_line_2("one") == 11
 
-with open("2023/day_01_input.txt") as f:
+
+with open("day_01_input.txt") as f:
     print(sum(map(get_number_from_line, f.readlines())))
 
     f.seek(0)
