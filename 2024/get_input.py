@@ -10,7 +10,7 @@ def get_input(day: int) -> list[str]:
     possible_input_file_path = Path(f"inputs/{day}.in")
     if possible_input_file_path.exists():
         with open(possible_input_file_path, "r") as f:
-            return f.readlines()
+            return list(map(lambda line: line.strip(), f.readlines()))
 
     else:
         session_token = environ.get("AOC_SESSION_TOKEN")
